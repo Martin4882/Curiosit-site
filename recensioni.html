@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recensioni - Cosimo C.O.</title>
+    <link rel="stylesheet" href="Cosimo sito.css">
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            console.log("Pagina completamente caricata.");
+            loadReviews(); // ✅ Carica le recensioni
+        });
+    
+        function submitReview() {
+            let restaurant = document.getElementById("restaurant-select").value;
+            let reviewer = document.getElementById("reviewer-name").value;
+            let reviewText = document.getElementById("review-text").value;
+            let rating = document.getElementById("review-rating").value;
+    
+            if (restaurant && reviewer && reviewText && rating) {
+                let reviews = JSON.parse(localStorage.getItem("reviews")) || [];
+                let newReview = {
+                    id: Date.now(),
+                    restaurant: restaurant,
+                    reviewer: reviewer,
+                    text: reviewText,
+                    rating: rating
+                };
+    
+                reviews.push(newReview);
+                localStorage.setItem("reviews", JSON.stringify(reviews));
+    
+                console.log(`Recensione salvata:`, newReview);
+                if (shouldShowAllReviews()) {
+                    addReviewToPage(newReview); // solo se siamo nella pagina con tutte
+                } else {
+                    location.reload(); // per aggiornare la vista limitata
+                }
+    
+                document.getElementById("reviewer-name").value = "";
+                document.getElementById("review-text").value = "";
+                document.getElementById("review-rating").value = "5";
+            } else {
+                alert("Compila tutti i campi per inviare la recensione!");
+            }
+        }
+    
+        function loadReviews() {
+            let reviews = JSON.parse(localStorage.getItem("reviews")) || [];
+    
+            // Ordina le recensioni dalla più recente alla meno recente
+            reviews.sort((a, b) => b.id - a.id);
+    
+            // Se siamo nella pagina con tutte le recensioni, le mostriamo tutte
+            if (!shouldShowAllReviews()) {
+                reviews = reviews.slice(0, 3); // altrimenti solo le 3 più recenti
+            }
+    
+            reviews.forEach(review => addReviewToPage(review));
+        }
+    
+        function addReviewToPage(review) {
+            let reviewContainer = document.getElementById("reviews-container");
+            let newReview = document.createElement("div");
+            newReview.classList.add("review");
+            newReview.setAttribute("data-id", review.id);
+            newReview.innerHTML = `
+                <h3>${review.reviewer} - <span>${review.restaurant}</span></h3>
+                <p class="stars">${"⭐".repeat(review.rating)}</p>
+                <p>"${review.text}"</p>
+                <button onclick="deleteReview(${review.id})">🗑️ Cancella</button>
+            `;
+            reviewContainer.appendChild(newReview);
+        }
+    
+        function deleteReview(reviewId) {
+            let reviews = JSON.parse(localStorage.getItem("reviews")) || [];
+            let updatedReviews = reviews.filter(review => review.id !== reviewId);
+            localStorage.setItem("reviews", JSON.stringify(updatedReviews));
+    
+            document.querySelector(`.review[data-id='${reviewId}']`).remove();
+            console.log(`Recensione ${reviewId} eliminata.`);
+        }
+    
+        function shouldShowAllReviews() {
+            // Controlla se siamo nella pagina 'Tutte-le-recensioni.html'
+            return window.location.pathname.includes("Tutte-le-recensioni");
+        }
+    </script>
+    
+</head>
+<body>
+    <header>
+        <h1>Cosimo C.O.</h1>
+        <p>Trova e valuta i migliori ristoranti!</p>
+    </header>
+    
+    <nav class="active">
+        <ul>
+            <li><a href="Sito cosimo.html">Home</a></li>
+            <li><a href="ristoranti.html">Ristoranti</a></li>
+            <div class="dropdown">
+                <button class="dropbtn" tabindex="0">Recensioni</button>
+                <div class="dropdown-content">
+                    <li><a href="recensioni.html">Lascia una Recensione</a></li>
+                    <li><a href="Tutte-le-recensioni.html">ㅤTutte leㅤRecensioni</a></li>
+                </div>
+            </div>
+            <li><a href="contatti.html">Contatti</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <h2>Lascia una recensione</h2>
+        <div class="review-form">
+            <label for="restaurant-select">Scegli un ristorante:</label>
+            <select id="restaurant-select">
+                <option value="">-- Seleziona un ristorante --</option>
+                <option value="Ristorante Bella Vita">Ristorante Bella Vita</option>
+                <option value="Osteria del Gusto">Osteria del Gusto</option>
+                <option value="Trattoria da Mario">Trattoria da Mario</option>
+            </select>
+
+            <label for="review-rating">Voto:</label>
+            <select id="review-rating">
+                <option value="1">⭐</option>
+                <option value="2">⭐⭐</option>
+                <option value="3">⭐⭐⭐</option>
+                <option value="4">⭐⭐⭐⭐</option>
+                <option value="5" selected>⭐⭐⭐⭐⭐</option>
+            </select>
+
+            <input type="text" id="reviewer-name" placeholder="Il tuo nome">
+            <textarea id="review-text" placeholder="Scrivi la tua recensione..."></textarea>
+            <button onclick="submitReview()">Invia Recensione</button>
+        </div>
+        <ul>
+    </ul>
+        <h2>Recensioni recenti</h2>
+        <div id="reviews-container">
+            <!-- Le recensioni verranno caricate qui -->
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Cosimo C.O. - Tutti i diritti riservati</p>
+    </footer>
+</body>
+</html>

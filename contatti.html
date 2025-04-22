@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contatti - Cosimo C.O.</title>
+    <link rel="stylesheet" href="Cosimo sito.css">
+</head>
+<body>
+    <header>
+        <h1>Cosimo C.O.</h1>
+        <p>Trova e valuta i migliori ristoranti!</p>
+    </header>
+    
+    <nav class="active">
+        <ul>
+            <li><a href="Sito cosimo.html">Home</a></li>
+            <li><a href="ristoranti.html">Ristoranti</a></li>
+            <div class="dropdown">
+                <button class="dropbtn" tabindex="0">Recensioni</button>
+                <div class="dropdown-content">
+                    <li><a href="recensioni.html">Lascia una Recensione</a></li>
+                    <li><a href="Tutte-le-recensioni.html">ㅤTutte leㅤRecensioni</a></li>
+                </div>
+            </div>
+            <li><a href="contatti.html">Contatti</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <section class="contact-container">
+            <h2>Contattaci</h2>
+            <p>Hai domande o suggerimenti? Scrivici un messaggio!</p>
+
+            <!-- ✅ Form che invia il messaggio al tuo indirizzo -->
+            <form class="contact-form" action="https://formsubmit.co/TUO_EMAIL@example.com" method="POST">
+                <!-- Anti-spam -->
+                <input type="hidden" name="_captcha" value="false">
+                <input type="hidden" name="_template" value="table">
+
+                <label for="name">Nome:</label>
+                <input type="text" id="name" name="name" placeholder="Il tuo nome" required>
+                
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" placeholder="La tua email" required>
+                
+                <label for="message">Messaggio:</label>
+                <textarea id="message" name="message" placeholder="Scrivi il tuo messaggio..." required></textarea>
+                
+                <button type="submit">Invia</button>
+            </form>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Cosimo C.O. - Tutti i diritti riservati</p>
+    </footer>
+</body>
+</html>

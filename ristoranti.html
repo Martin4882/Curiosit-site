@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ristoranti - Cosimo C.O.</title>
+    <link rel="stylesheet" href="Cosimo sito.css">
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            console.log("Pagina completamente caricata.");
+            updateRatings(); // ✅ Aggiorna i voti dei ristoranti dalle recensioni
+        });
+
+        function updateRatings() {
+            let reviews = JSON.parse(localStorage.getItem("reviews")) || {};
+            let ratings = {};
+
+            // Calcola la media dei voti per ogni ristorante
+            reviews.forEach(review => {
+                if (!ratings[review.restaurant]) {
+                    ratings[review.restaurant] = { total: 0, count: 0 };
+                }
+                ratings[review.restaurant].total += parseInt(review.rating);
+                ratings[review.restaurant].count += 1;
+            });
+
+            // Aggiorna i voti sulla pagina
+            document.querySelectorAll(".restaurant-card").forEach(card => {
+                let name = card.getAttribute("data-name");
+                if (ratings[name]) {
+                    let avgRating = (ratings[name].total / ratings[name].count).toFixed(1);
+                    card.querySelector(".rating").innerHTML = `⭐ ${avgRating}`;
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+    <header>
+        <h1>Cosimo C.O.</h1>
+        <p>Trova e valuta i migliori ristoranti!</p>
+    </header>
+    
+    <nav class="active">
+        <ul>
+            <li><a href="Sito cosimo.html">Home</a></li>
+            <li><a href="ristoranti.html">Ristoranti</a></li>
+            <div class="dropdown">
+                <button class="dropbtn" tabindex="0">Recensioni</button>
+                <div class="dropdown-content">
+                    <li><a href="recensioni.html">Lascia una Recensione</a></li>
+                    <li><a href="Tutte-le-recensioni.html">ㅤTutte leㅤRecensioni</a></li>
+                </div>
+            </div>
+            <li><a href="contatti.html">Contatti</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <h2>Lista dei Ristoranti</h2>
+        <div class="restaurant-list">
+            <div class="restaurant-card" data-name="Ristorante Bella Vita">
+                <h3>Ristorante Bella Vita</h3>
+                <p class="rating">⭐ 4.5</p>
+                <p>Milano, Italia</p>
+                <a href="recensioni.html">Vedi Recensioni</a>
+            </div>
+
+            <div class="restaurant-card" data-name="Osteria del Gusto">
+                <h3>Osteria del Gusto</h3>
+                <p class="rating">⭐ 4.5</p>
+                <p>Roma, Italia</p>
+                <a href="recensioni.html" z>Vedi Recensioni</a>
+            </div>
+        </div>
+    </main>
+    
+    <footer>
+        <p>&copy; 2025 Cosimo C.O. - Tutti i diritti riservati</p>
+    </footer>
+</body>
+</html>

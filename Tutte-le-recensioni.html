@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tutte le recensioni - Cosimo C.O.</title>
+    <link rel="stylesheet" href="Cosimo sito.css">
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            console.log("Pagina completamente caricata.");
+            loadReviews(); // Carica tutte le recensioni
+        });
+
+        function loadReviews() {
+            let reviews = JSON.parse(localStorage.getItem("reviews")) || [];
+
+            // Ordina le recensioni dalla più recente alla più vecchia
+            reviews.sort((a, b) => b.id - a.id);
+
+            reviews.forEach(review => addReviewToPage(review));
+        }
+
+        function addReviewToPage(review) {
+            let reviewContainer = document.getElementById("reviews-container");
+            let newReview = document.createElement("div");
+            newReview.classList.add("review");
+            newReview.setAttribute("data-id", review.id);
+            newReview.innerHTML = `
+                <h3>${review.reviewer} - <span>${review.restaurant}</span></h3>
+                <p class="stars">${"⭐".repeat(review.rating)}</p>
+                <p>"${review.text}"</p>
+            `;
+            reviewContainer.appendChild(newReview);
+        }
+    </script>
+</head>
+<body>
+    <header>
+        <h1>Cosimo C.O.</h1>
+        <p>Trova e valuta i migliori ristoranti!</p>
+    </header>
+
+    <nav class="active">
+        <ul>
+            <li><a href="Sito cosimo.html">Home</a></li>
+            <li><a href="ristoranti.html">Ristoranti</a></li>
+            <div class="dropdown">
+                <button class="dropbtn" tabindex="0">Recensioni</button>
+                <div class="dropdown-content">
+                    <li><a href="recensioni.html">Lascia una Recensione</a></li>
+                    <li><a href="Tutte-le-recensioni.html">ㅤTutte leㅤRecensioni</a></li>
+                </div>
+            </div>
+            <li><a href="contatti.html">Contatti</a></li>
+        </ul>
+    </nav>
+
+    <main>
+    <div class="basta">
+        <h2 class="all-recension">Tutte le recensioni</h2>
+    </div>
+        <div id="reviews-container">
+            <!-- Le recensioni verranno caricate qui -->
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Cosimo C.O. - Tutti i diritti riservati</p>
+    </footer>
+</body>
+</html>
